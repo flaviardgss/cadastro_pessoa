@@ -1,14 +1,10 @@
 package br.com.sistema.view;
 
-import javax.swing.JOptionPane;
-
 public class MainWindow extends javax.swing.JFrame {
 
     PersonWindow jc;
 
     public MainWindow() {
-        // setTitle("Minha Janela");
-        //setLocationRelativeTo(null);
         initComponents();
     }
 
@@ -168,7 +164,9 @@ public class MainWindow extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainWindow().setVisible(true);
+                LoginWindow login = new LoginWindow();
+                login.setLocationRelativeTo(null);
+                login.setVisible(true);
             }
         });
     }

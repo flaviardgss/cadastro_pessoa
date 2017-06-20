@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 
 public class PersonDao {
 
@@ -17,25 +16,32 @@ public class PersonDao {
         banco = new ArrayList<>();
     }
 
-    public void gravar(Person p) {
+    public boolean gravar(Person p) {
         String sql = "INSERT INTO pessoa ";
         sql += "(nome,registro,sexo,escolaridade) ";
         sql += "VALUES ('" + p.getNome() + "'," + p.getRegistro() + ",'"
                 + p.getSexo() + "','" + p.getEscolaridade() + "')";
         try {
-            Statement stm = base.conectar().createStatement();
-            stm.executeUpdate(sql);
+            Person newPerson = buscar(p.getRegistro());
+            if (newPerson.getRegistro() != p.getRegistro()) {
+                Statement stm = base.conectar().createStatement();
+                stm.executeUpdate(sql);
+                banco.add(p);
+                return true;
+            } else {
+                return false;
+            }
         } catch (SQLException ex) {
-
+            return false;
+        } finally {
+            base.desconectar();
         }
-
-        banco.add(p);
     }
 
     public ArrayList<Person> listagem() {
-        String sql = "SELECT * FROM pessoa";
-        ResultSet rs = null;
-        Statement stm = null;
+        String sql = "SELECT * FROM pessoa ORDER BY registro";
+        ResultSet rs;
+        Statement stm;
         banco.clear();
         try {
             stm = base.conectar().createStatement();
@@ -49,7 +55,8 @@ public class PersonDao {
                 banco.add(pessoa);
             }
         } catch (SQLException ex) {
-
+        } finally {
+            base.desconectar();
         }
         return banco;
     }
@@ -57,24 +64,21 @@ public class PersonDao {
     public Person buscar(int cod) {
         Person novaPessoa = new Person();
         String sql = "SELECT * FROM pessoa WHERE registro=" + cod;
-        ResultSet rs = null;
-        Statement stm = null;
+        ResultSet rs;
+        Statement stm;
         try {
             stm = base.conectar().createStatement();
             rs = stm.executeQuery(sql);
-            int teste = 0;
             while (rs.next()) {
-                teste++;
                 novaPessoa.setNome(rs.getString("nome"));
                 novaPessoa.setRegistro(rs.getInt("registro"));
                 novaPessoa.setSexo(rs.getString("sexo").charAt(0));
                 novaPessoa.setEscolaridade(rs.getString("escolaridade"));
             }
-            if (teste <= 0) {
-                JOptionPane.showMessageDialog(null, "Pessoa não encontrada!");
-            }
         } catch (SQLException ex) {
-              }
+        } finally {
+            base.desconectar();
+        }
         return novaPessoa;
     }
 
@@ -87,18 +91,27 @@ public class PersonDao {
             Statement stm = base.conectar().createStatement();
             stm.executeUpdate(sql);
         } catch (SQLException ex) {
-
+        } finally {
+            base.desconectar();
         }
         return p;
     }
 
-    public void excluir(int cod) {
+    public boolean excluir(int cod) {
         String sql = "DELETE FROM pessoa WHERE registro=" + cod;
+        int test;
         try {
             Statement stm = base.conectar().createStatement();
-            stm.executeUpdate(sql);
+            test = stm.executeUpdate(sql);
+            if (test > 0) {
+                return true;
+            } else {
+                return false;
+            }
         } catch (SQLException ex) {
-
+            return false;
+        } finally {
+            base.desconectar();
         }
     }
 }

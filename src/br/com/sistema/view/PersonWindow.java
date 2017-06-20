@@ -65,22 +65,12 @@ public class PersonWindow extends javax.swing.JDialog {
         ScrollPaneArea.setViewportView(areaLista);
 
         txtRecord.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
-        txtRecord.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtRecordActionPerformed(evt);
-            }
-        });
 
         txtName.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
 
         buttonGroupRadio.add(rdSexM);
         rdSexM.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
         rdSexM.setText("Masculino");
-        rdSexM.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdSexMActionPerformed(evt);
-            }
-        });
 
         buttonGroupRadio.add(rdSexF);
         rdSexF.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
@@ -88,11 +78,6 @@ public class PersonWindow extends javax.swing.JDialog {
 
         cbLevel.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
         cbLevel.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Fundamental", "Médio", "Superior", "Pós-Graduação" }));
-        cbLevel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbLevelActionPerformed(evt);
-            }
-        });
 
         ButtonSearch.setFont(new java.awt.Font("Trebuchet MS", 0, 14)); // NOI18N
         ButtonSearch.setText("Buscar");
@@ -198,10 +183,11 @@ public class PersonWindow extends javax.swing.JDialog {
                     .addComponent(LabelName)
                     .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(PanelRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rdSexM)
-                    .addComponent(rdSexF)
-                    .addComponent(LabelSex))
+                .addGroup(PanelRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(LabelSex)
+                    .addGroup(PanelRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(rdSexM)
+                        .addComponent(rdSexF)))
                 .addGap(18, 18, 18)
                 .addGroup(PanelRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LabeLevel)
@@ -243,9 +229,6 @@ public class PersonWindow extends javax.swing.JDialog {
 
     private void ButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonSaveActionPerformed
         cadastrar();
-        limpaTela();
-        listar();
-
     }//GEN-LAST:event_ButtonSaveActionPerformed
 
     private void ButtonListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonListActionPerformed
@@ -259,38 +242,29 @@ public class PersonWindow extends javax.swing.JDialog {
 
     private void ButtonChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonChangeActionPerformed
         alterar();
-        limpaTela();
-        listar();
     }//GEN-LAST:event_ButtonChangeActionPerformed
-
-    private void txtRecordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRecordActionPerformed
-    }//GEN-LAST:event_txtRecordActionPerformed
-
-    private void rdSexMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdSexMActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rdSexMActionPerformed
-
-    private void cbLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbLevelActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbLevelActionPerformed
 
     private void ButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonDeleteActionPerformed
         excluir();
-        limpaTela();
-        listar();
     }//GEN-LAST:event_ButtonDeleteActionPerformed
 
     private void buscar() {
-        Person px = base.buscar(Integer.parseInt(txtRecord.getText()));
-        if (px.getRegistro() != 0) {
-            txtRecord.setText("" + px.getRegistro());
-            txtName.setText(px.getNome());
-            if (px.getSexo() == 'M' || px.getSexo() == 'm') {
-                rdSexM.setSelected(true);
+        try {
+            Person px = base.buscar(Integer.parseInt(txtRecord.getText()));
+            if (px.getRegistro() != 0) {
+                txtRecord.setText("" + px.getRegistro());
+                txtName.setText(px.getNome());
+                if (px.getSexo() == 'M' || px.getSexo() == 'm') {
+                    rdSexM.setSelected(true);
+                } else {
+                    rdSexF.setSelected(true);
+                }
+                cbLevel.setSelectedItem(px.getEscolaridade());
             } else {
-                rdSexF.setSelected(true);
+                JOptionPane.showMessageDialog(null, "Pessoa não encontrada!");
             }
-            cbLevel.setSelectedItem(px.getEscolaridade());
+        } catch (NumberFormatException ex) {
+            limpaTela();
         }
     }
 
@@ -304,31 +278,58 @@ public class PersonWindow extends javax.swing.JDialog {
     }
 
     private void cadastrar() {
-        Person p = new Person();
-        p.setRegistro(Integer.parseInt(txtRecord.getText()));
-        p.setNome(txtName.getText());
-        char s = (rdSexM.isSelected() ? 'M' : 'F');
-        p.setSexo(s);
-        String escola = (String) cbLevel.getSelectedItem();
-        p.setEscolaridade(escola);
-        base.gravar(p);
-        JOptionPane.showMessageDialog(null, "Dados Gravados com Sucesso");
+        try {
+            Person p = new Person();
+            p.setRegistro(Integer.parseInt(txtRecord.getText()));
+            p.setNome(txtName.getText());
+            char s = (rdSexM.isSelected() ? 'M' : 'F');
+            p.setSexo(s);
+            String escola = (String) cbLevel.getSelectedItem();
+            p.setEscolaridade(escola);
+            if (base.gravar(p)) {
+                JOptionPane.showMessageDialog(null, "Dados gravados com sucesso!");
+                limpaTela();
+                listar();
+            } else {
+                JOptionPane.showMessageDialog(null, "Registro já gravado anteriormente!");
+                listar();
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Registro inválido!");
+        }
     }
 
     private void alterar() {
-        Person p = new Person();
-        p.setRegistro(Integer.parseInt(txtRecord.getText()));
-        p.setNome(txtName.getText());
-        char s = (rdSexM.isSelected() ? 'M' : 'F');
-        p.setSexo(s);
-        String escola = (String) cbLevel.getSelectedItem();
-        p.setEscolaridade(escola);
-        base.alterar(p);
-        JOptionPane.showMessageDialog(null, "Dados Alterados com Sucesso");
+        try {
+            Person p = new Person();
+            p.setRegistro(Integer.parseInt(txtRecord.getText()));
+            p.setNome(txtName.getText());
+            char s = (rdSexM.isSelected() ? 'M' : 'F');
+            p.setSexo(s);
+            String escola = (String) cbLevel.getSelectedItem();
+            p.setEscolaridade(escola);
+            base.alterar(p);
+            JOptionPane.showMessageDialog(null, "Registro alterado com sucesso!");
+            limpaTela();
+            listar();
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Registro inválido!");
+        }
     }
 
     private void excluir() {
-        base.excluir(Integer.parseInt(txtRecord.getText()));
+        try {
+            if (base.excluir(Integer.parseInt(txtRecord.getText()))) {
+                JOptionPane.showMessageDialog(null, "Registro excluído!");
+                limpaTela();
+                listar();
+            } else {
+                JOptionPane.showMessageDialog(null, "Registro não foi excluído!");
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Registro inválido!");
+            limpaTela();
+        }
     }
 
     private void limpaTela() {
@@ -340,11 +341,9 @@ public class PersonWindow extends javax.swing.JDialog {
     }
 
     public static void main(String args[]) {
-
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 PersonWindow dialog = new PersonWindow(new javax.swing.JFrame(), true);
-                //limpaTela();
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

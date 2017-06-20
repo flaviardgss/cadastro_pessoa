@@ -1,7 +1,5 @@
 package br.com.sistema.model;
 
-import javax.swing.JOptionPane;
-
 public class Person {
 
     private int registro;

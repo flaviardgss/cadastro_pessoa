@@ -7,10 +7,10 @@ import javax.swing.JOptionPane;
 
 public class ConectionMySql {
 
-    private String host = "localhost";
-    private String usuario = "root";
-    private String senha = "admin";
-    private String banco = "pessoa";
+    private final String host = "localhost";
+    private final String usuario = "root";
+    private final String senha = "admin";
+    private final String banco = "pessoa";
     public Connection con;
 
     public ConectionMySql() {
@@ -35,7 +35,7 @@ public class ConectionMySql {
     public void desconectar() {
         try {
             con.close();
-            System.out.println("Fechando...");
+            System.out.println("Banco desconectado!");
 
         } catch (Exception ex) {
 
