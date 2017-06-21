@@ -228,111 +228,111 @@ public class PersonWindow extends javax.swing.JDialog {
     }//GEN-LAST:event_ButtonCloseActionPerformed
 
     private void ButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonSaveActionPerformed
-        cadastrar();
+        register();
     }//GEN-LAST:event_ButtonSaveActionPerformed
 
     private void ButtonListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonListActionPerformed
-        listar();
-        limpaTela();
+        display();
+        clear();
     }//GEN-LAST:event_ButtonListActionPerformed
 
     private void ButtonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonSearchActionPerformed
-        buscar();
+        search();
     }//GEN-LAST:event_ButtonSearchActionPerformed
 
     private void ButtonChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonChangeActionPerformed
-        alterar();
+        change();
     }//GEN-LAST:event_ButtonChangeActionPerformed
 
     private void ButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonDeleteActionPerformed
-        excluir();
+        delete();
     }//GEN-LAST:event_ButtonDeleteActionPerformed
 
-    private void buscar() {
+    private void search() {
         try {
-            Person px = base.buscar(Integer.parseInt(txtRecord.getText()));
-            if (px.getRegistro() != 0) {
-                txtRecord.setText("" + px.getRegistro());
-                txtName.setText(px.getNome());
-                if (px.getSexo() == 'M' || px.getSexo() == 'm') {
+            Person px = base.search(Integer.parseInt(txtRecord.getText()));
+            if (px.getRegister() != 0) {
+                txtRecord.setText("" + px.getRegister());
+                txtName.setText(px.getName());
+                if (px.getSex() == 'M' || px.getSex() == 'm') {
                     rdSexM.setSelected(true);
                 } else {
                     rdSexF.setSelected(true);
                 }
-                cbLevel.setSelectedItem(px.getEscolaridade());
+                cbLevel.setSelectedItem(px.getLevel());
             } else {
                 JOptionPane.showMessageDialog(null, "Pessoa não encontrada!");
             }
         } catch (NumberFormatException ex) {
-            limpaTela();
+            clear();
         }
     }
 
-    private void listar() {
-        ArrayList<Person> l = base.listagem();
-        String dados = "";
+    private void display() {
+        ArrayList<Person> l = base.listing();
+        String data = "";
         for (int x = 0; x < l.size(); x++) {
-            dados += l.get(x).toString() + "\n";
+            data += l.get(x).toString() + "\n";
         }
-        areaLista.setText(dados);
+        areaLista.setText(data);
     }
 
-    private void cadastrar() {
+    private void register() {
         try {
             Person p = new Person();
-            p.setRegistro(Integer.parseInt(txtRecord.getText()));
-            p.setNome(txtName.getText());
+            p.setRegister(Integer.parseInt(txtRecord.getText()));
+            p.setName(txtName.getText());
             char s = (rdSexM.isSelected() ? 'M' : 'F');
-            p.setSexo(s);
-            String escola = (String) cbLevel.getSelectedItem();
-            p.setEscolaridade(escola);
-            if (base.gravar(p)) {
+            p.setSex(s);
+            String level = (String) cbLevel.getSelectedItem();
+            p.setLevel(level);
+            if (base.save(p)) {
                 JOptionPane.showMessageDialog(null, "Dados gravados com sucesso!");
-                limpaTela();
-                listar();
+                clear();
+                display();
             } else {
                 JOptionPane.showMessageDialog(null, "Registro já gravado anteriormente!");
-                listar();
+                display();
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "Registro inválido!");
         }
     }
 
-    private void alterar() {
+    private void change() {
         try {
             Person p = new Person();
-            p.setRegistro(Integer.parseInt(txtRecord.getText()));
-            p.setNome(txtName.getText());
+            p.setRegister(Integer.parseInt(txtRecord.getText()));
+            p.setName(txtName.getText());
             char s = (rdSexM.isSelected() ? 'M' : 'F');
-            p.setSexo(s);
+            p.setSex(s);
             String escola = (String) cbLevel.getSelectedItem();
-            p.setEscolaridade(escola);
-            base.alterar(p);
+            p.setLevel(escola);
+            base.change(p);
             JOptionPane.showMessageDialog(null, "Registro alterado com sucesso!");
-            limpaTela();
-            listar();
+            clear();
+            display();
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "Registro inválido!");
         }
     }
 
-    private void excluir() {
+    private void delete() {
         try {
-            if (base.excluir(Integer.parseInt(txtRecord.getText()))) {
+            if (base.delete(Integer.parseInt(txtRecord.getText()))) {
                 JOptionPane.showMessageDialog(null, "Registro excluído!");
-                limpaTela();
-                listar();
+                clear();
+                display();
             } else {
                 JOptionPane.showMessageDialog(null, "Registro não foi excluído!");
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(null, "Registro inválido!");
-            limpaTela();
+            clear();
         }
     }
 
-    private void limpaTela() {
+    private void clear() {
         txtRecord.setText("");
         txtName.setText("");
         buttonGroupRadio.clearSelection();

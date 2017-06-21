@@ -8,18 +8,18 @@ import javax.swing.JOptionPane;
 public class ConectionMySql {
 
     private final String host = "localhost";
-    private final String usuario = "root";
-    private final String senha = "admin";
-    private final String banco = "pessoa";
-    public Connection con;
+    private final String user = "root";
+    private final String password = "admin";
+    private final String database = "pessoa";
+    public Connection connection;
 
     public ConectionMySql() {
     }
 
-    public Connection conectar() {
+    public Connection connect() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://" + host + "/" + banco + "?user=" + usuario + "&password=" + senha);
+            connection = DriverManager.getConnection("jdbc:mysql://" + host + "/" + database + "?user=" + user + "&password=" + password);
             System.out.println("Banco conectado!");
 
         } catch (ClassNotFoundException ex) {
@@ -29,12 +29,12 @@ public class ConectionMySql {
             JOptionPane.showMessageDialog(null, "Falha na Conexão:" + ex.getMessage());
 
         }
-        return con;
+        return connection;
     }
 
-    public void desconectar() {
+    public void disconnect() {
         try {
-            con.close();
+            connection.close();
             System.out.println("Banco desconectado!");
 
         } catch (Exception ex) {
@@ -43,9 +43,9 @@ public class ConectionMySql {
     }
 
     public static void main(String[] args) {
-        ConectionMySql conecte = new ConectionMySql();
-        conecte.conectar();
-        conecte.desconectar();
+        ConectionMySql con = new ConectionMySql();
+        con.connect();
+        con.disconnect();
     }
 
 }

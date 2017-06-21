@@ -2,58 +2,58 @@ package br.com.sistema.model;
 
 public class Person {
 
-    private int registro;
-    private String nome;
-    private char sexo;
-    private String escolaridade;
+    private int register;
+    private String name;
+    private char sex;
+    private String level;
 
     public Person() {
     }
 
-    public Person(int registro, String nome, char sexo, String escolaridade) {
-        this.registro = registro;
-        this.nome = nome;
-        this.sexo = sexo;
-        this.escolaridade = escolaridade;
+    public Person(int register, String name, char sex, String level) {
+        this.register = register;
+        this.name = name;
+        this.sex = sex;
+        this.level = level;
     }
 
-    public String getEscolaridade() {
-        return escolaridade;
+    public String getLevel() {
+        return level;
     }
 
-    public void setEscolaridade(String escolaridade) {
-        this.escolaridade = escolaridade;
+    public void setLevel(String level) {
+        this.level = level;
     }
 
-    public int getRegistro() {
-        return registro;
+    public int getRegister() {
+        return register;
     }
 
-    public void setRegistro(int registro) {
-        this.registro = registro;
+    public void setRegister(int register) {
+        this.register = register;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public char getSexo() {
-        return sexo;
+    public char getSex() {
+        return sex;
     }
 
-    public void setSexo(char sexo) {
-        this.sexo = sexo;
+    public void setSex(char sex) {
+        this.sex = sex;
     }
 
     @Override
     public String toString() {
-        return "* ID: " + getRegistro()
-                + " \tNome: " + getNome()
-                + " \tSexo: " + getSexo()
-                + " \tNível: " + getEscolaridade();
+        return "* ID: " + getRegister()
+                + " \tNome: " + getName()
+                + " \tSexo: " + getSex()
+                + " \tNível: " + getLevel();
     }
 }

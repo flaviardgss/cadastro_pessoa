@@ -2,7 +2,7 @@ package br.com.sistema.view;
 
 public class MainWindow extends javax.swing.JFrame {
 
-    PersonWindow jc;
+    PersonWindow window;
 
     public MainWindow() {
         initComponents();
@@ -134,8 +134,8 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void MenuItemClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemClientActionPerformed
-        jc = new PersonWindow(this, true);
-        jc.setVisible(true);
+        window = new PersonWindow(this, true);
+        window.setVisible(true);
     }//GEN-LAST:event_MenuItemClientActionPerformed
 
     private void MenuItemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemExitActionPerformed
@@ -143,9 +143,9 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_MenuItemExitActionPerformed
 
     private void MenuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemAboutActionPerformed
-        AboutWindow sobre = new AboutWindow();
-        sobre.setLocationRelativeTo(null);
-        sobre.setVisible(true);
+        AboutWindow about = new AboutWindow();
+        about.setLocationRelativeTo(null);
+        about.setVisible(true);
     }//GEN-LAST:event_MenuItemAboutActionPerformed
 
     private void MenuItemBackupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuItemBackupActionPerformed

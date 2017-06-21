@@ -9,24 +9,24 @@ import java.util.ArrayList;
 public class PersonDao {
 
     ConectionMySql base = new ConectionMySql();
-    ArrayList<Person> banco;
-    Person pessoa;
+    ArrayList<Person> database;
+    Person person;
 
     public PersonDao() {
-        banco = new ArrayList<>();
+        database = new ArrayList<>();
     }
 
-    public boolean gravar(Person p) {
+    public boolean save(Person p) {
         String sql = "INSERT INTO pessoa ";
         sql += "(nome,registro,sexo,escolaridade) ";
-        sql += "VALUES ('" + p.getNome() + "'," + p.getRegistro() + ",'"
-                + p.getSexo() + "','" + p.getEscolaridade() + "')";
+        sql += "VALUES ('" + p.getName() + "'," + p.getRegister() + ",'"
+                + p.getSex() + "','" + p.getLevel() + "')";
         try {
-            Person newPerson = buscar(p.getRegistro());
-            if (newPerson.getRegistro() != p.getRegistro()) {
-                Statement stm = base.conectar().createStatement();
+            Person newPerson = search(p.getRegister());
+            if (newPerson.getRegister() != p.getRegister()) {
+                Statement stm = base.connect().createStatement();
                 stm.executeUpdate(sql);
-                banco.add(p);
+                database.add(p);
                 return true;
             } else {
                 return false;
@@ -34,74 +34,74 @@ public class PersonDao {
         } catch (SQLException ex) {
             return false;
         } finally {
-            base.desconectar();
+            base.disconnect();
         }
     }
 
-    public ArrayList<Person> listagem() {
+    public ArrayList<Person> listing() {
         String sql = "SELECT * FROM pessoa ORDER BY registro";
         ResultSet rs;
         Statement stm;
-        banco.clear();
+        database.clear();
         try {
-            stm = base.conectar().createStatement();
+            stm = base.connect().createStatement();
             rs = stm.executeQuery(sql);
             while (rs.next()) {
-                this.pessoa = new Person();
-                this.pessoa.setNome(rs.getString("nome"));
-                this.pessoa.setRegistro(rs.getInt("registro"));
-                this.pessoa.setSexo(rs.getString("sexo").charAt(0));
-                this.pessoa.setEscolaridade(rs.getString("escolaridade"));
-                banco.add(pessoa);
+                this.person = new Person();
+                this.person.setName(rs.getString("nome"));
+                this.person.setRegister(rs.getInt("registro"));
+                this.person.setSex(rs.getString("sexo").charAt(0));
+                this.person.setLevel(rs.getString("escolaridade"));
+                database.add(person);
             }
         } catch (SQLException ex) {
         } finally {
-            base.desconectar();
+            base.disconnect();
         }
-        return banco;
+        return database;
     }
 
-    public Person buscar(int cod) {
-        Person novaPessoa = new Person();
+    public Person search(int cod) {
+        Person newPerson = new Person();
         String sql = "SELECT * FROM pessoa WHERE registro=" + cod;
         ResultSet rs;
         Statement stm;
         try {
-            stm = base.conectar().createStatement();
+            stm = base.connect().createStatement();
             rs = stm.executeQuery(sql);
             while (rs.next()) {
-                novaPessoa.setNome(rs.getString("nome"));
-                novaPessoa.setRegistro(rs.getInt("registro"));
-                novaPessoa.setSexo(rs.getString("sexo").charAt(0));
-                novaPessoa.setEscolaridade(rs.getString("escolaridade"));
+                newPerson.setName(rs.getString("nome"));
+                newPerson.setRegister(rs.getInt("registro"));
+                newPerson.setSex(rs.getString("sexo").charAt(0));
+                newPerson.setLevel(rs.getString("escolaridade"));
             }
         } catch (SQLException ex) {
         } finally {
-            base.desconectar();
+            base.disconnect();
         }
-        return novaPessoa;
+        return newPerson;
     }
 
-    public Person alterar(Person p) {
-        String sql = "UPDATE pessoa SET nome='" + p.getNome() + "'"
-                + ", escolaridade='" + p.getEscolaridade() + "', "
-                + "sexo='" + p.getSexo() + "'"
-                + "WHERE registro=" + p.getRegistro();
+    public Person change(Person p) {
+        String sql = "UPDATE pessoa SET nome='" + p.getName() + "'"
+                + ", escolaridade='" + p.getLevel() + "', "
+                + "sexo='" + p.getSex() + "'"
+                + "WHERE registro=" + p.getRegister();
         try {
-            Statement stm = base.conectar().createStatement();
+            Statement stm = base.connect().createStatement();
             stm.executeUpdate(sql);
         } catch (SQLException ex) {
         } finally {
-            base.desconectar();
+            base.disconnect();
         }
         return p;
     }
 
-    public boolean excluir(int cod) {
+    public boolean delete(int cod) {
         String sql = "DELETE FROM pessoa WHERE registro=" + cod;
         int test;
         try {
-            Statement stm = base.conectar().createStatement();
+            Statement stm = base.connect().createStatement();
             test = stm.executeUpdate(sql);
             if (test > 0) {
                 return true;
@@ -111,7 +111,7 @@ public class PersonDao {
         } catch (SQLException ex) {
             return false;
         } finally {
-            base.desconectar();
+            base.disconnect();
         }
     }
 }
